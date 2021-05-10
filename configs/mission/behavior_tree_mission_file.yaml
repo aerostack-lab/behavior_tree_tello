@@ -1,0 +1,72 @@
+nodes:
+  - node: 1
+    name: Mission
+    type: control_flow
+    subtype: sequence
+    parent: 0
+
+  - node: 2
+    name: Take off
+    type: execution
+    subtype: task
+    task: TAKE_OFF
+    wait_for_completion: false
+    parent: 1
+
+  - node: 3
+    name: Movement
+    type: control_flow
+    subtype: sequence
+    parent: 1
+
+  - node: 4
+    name: Move vertical
+    type: execution
+    subtype: task
+    task: MOVE_VERTICAL
+    parameters: "distance: 1"
+    wait_for_completion: false
+    parent: 3
+
+  - node: 5
+    name: Rotate
+    type: execution
+    subtype: task
+    task: ROTATE
+    parameters: "relative_angle: 90"
+    wait_for_completion: false
+    parent: 3
+
+  - node: 6
+    name: Move forward
+    type: execution
+    subtype: task
+    task: MOVE_AT_SPEED
+    parameters: "direction: 'FORWARD'"
+    wait_for_completion: true
+    parent: 3
+
+  - node: 7
+    name: Wait
+    type: execution
+    subtype: task
+    task: WAIT
+    parameters: "duration: 6"
+    wait_for_completion: false
+    parent: 3
+
+  - node: 8
+    name: Hover
+    type: execution
+    subtype: task
+    task: HOVER
+    wait_for_completion: true
+    parent: 3
+
+  - node: 9
+    name: Final landing
+    type: execution
+    subtype: task
+    task: LAND
+    wait_for_completion: false
+    parent: 1
