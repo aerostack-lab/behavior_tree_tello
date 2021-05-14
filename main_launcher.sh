@@ -1,9 +1,8 @@
 #!/bin/bash
 
 NUMID_DRONE=0
-export AEROSTACK_PROJECT=${AEROSTACK_STACK}/projects/behavior_tree_tello
+export APPLICATION_PATH=${PWD}
 
-. ${AEROSTACK_STACK}/config/mission/setup.sh
 
 #---------------------------------------------------------------------------------------------
 # INTERNAL PROCESSES
@@ -40,12 +39,7 @@ roslaunch multi_sensor_fusion multi_sensor_fusion.launch  --wait \
 `#---------------------------------------------------------------------------------------------` \
 `# Behavior Execution Viewer                                                                   ` \
 `#---------------------------------------------------------------------------------------------` \
---tab --title "Behavior Execution Viewer" --command "bash -c \"
-roslaunch behavior_execution_viewer behavior_execution_viewer.launch --wait \
-  robot_namespace:=drone$NUMID_DRONE \
-  drone_id:=$NUMID_DRONE \
-  catalog_path:=${AEROSTACK_PROJECT}/configs/mission/behavior_catalog.yaml;
-exec bash\""  \
+
 `#---------------------------------------------------------------------------------------------` \
 `# Belief Manager                                                                              ` \
 `#---------------------------------------------------------------------------------------------` \
@@ -53,7 +47,7 @@ exec bash\""  \
 roslaunch belief_manager_process belief_manager_process.launch --wait \
     drone_id_namespace:=drone$NUMID_DRONE \
     drone_id:=$NUMID_DRONE \
-    config_path:=${AEROSTACK_PROJECT}/configs/mission;
+    config_path:=${APPLICATION_PATH}/configs/mission;
 exec bash\""  \
 `#---------------------------------------------------------------------------------------------` \
 `# Belief Updater                                                                              ` \
@@ -69,7 +63,7 @@ exec bash\""  \
 --tab --title "Behavior coordinator" --command "bash -c \" sleep 2;
 roslaunch behavior_coordinator behavior_coordinator.launch --wait \
   robot_namespace:=drone$NUMID_DRONE \
-  catalog_path:=${AEROSTACK_PROJECT}/configs/mission/behavior_catalog.yaml;
+  catalog_path:=${APPLICATION_PATH}/configs/mission/behavior_catalog.yaml;
 exec bash\""  &
 
 echo "- Waiting for all process to be started..."
@@ -96,8 +90,8 @@ gnome-terminal \
 roslaunch behavior_tree_interpreter behavior_tree_interpreter.launch --wait \
   robot_namespace:=drone$NUMID_DRONE \
   drone_id:=$NUMID_DRONE \
-  mission_configuration_folder:=${AEROSTACK_PROJECT}/configs/mission \
-  catalog_path:=${AEROSTACK_PROJECT}/configs/mission/behavior_catalog.yaml;
+  mission_configuration_folder:=${APPLICATION_PATH}/configs/mission \
+  catalog_path:=${APPLICATION_PATH}/configs/mission/behavior_catalog.yaml;
 exec bash\"" &
 
 

@@ -1,9 +1,8 @@
 #!/bin/bash
 
 NUMID_DRONE=0
-export AEROSTACK_PROJECT=${AEROSTACK_STACK}/projects/behavior_tree_tello
+export APPLICATION_PATH=${PWD}
 
-. ${AEROSTACK_STACK}/config/mission/setup.sh
 
 gnome-terminal \
 `#---------------------------------------------------------------------------------------------` \
@@ -13,7 +12,7 @@ gnome-terminal \
 roslaunch behavior_tree_editor behavior_tree_editor.launch --wait \
   robot_namespace:=drone$NUMID_DRONE \
   drone_id:=$NUMID_DRONE \
-  mission_config_path:=${AEROSTACK_PROJECT}/configs/mission \
-  catalog_path:=${AEROSTACK_PROJECT}/configs/mission/behavior_catalog.yaml;
+  mission_config_path:=${APPLICATION_PATH}/configs/mission \
+  catalog_path:=${APPLICATION_PATH}/configs/mission/behavior_catalog.yaml;
 exec bash\""  &
 
